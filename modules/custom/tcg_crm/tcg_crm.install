@@ -1,0 +1,53 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function tcg_crm_schema() {
+  $schema['tcg_submission'] = [
+    'description' => 'List of submission for Sample Submission module.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Submission ID',
+      ],
+      'name' => [
+        'description' => 'Name',
+        'type' => 'varchar_ascii',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'email' => [
+        'description' => 'Email',
+        'type' => 'varchar_ascii',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'message' => [
+        'description' => 'Message',
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'File' => [
+        'description' => 'File',
+        'type' => 'varchar_ascii',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [
+      'name' => [
+        'name',
+      ],
+    ],
+  ];
+
+  return $schema;
+}

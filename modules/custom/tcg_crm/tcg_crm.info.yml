@@ -1,0 +1,4 @@
+name: Sample Submission
+type: module
+description: A custom module to manage sample submissions.
+core_version_requirement: ^10 || ^11

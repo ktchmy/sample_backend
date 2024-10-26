@@ -20,7 +20,7 @@ sites/sites.local.php
 .docksal
 
 # Ignore paths that contain user-generated content.
-web/sites/*/files
+sites/*/files
 
 # Private file system
 private
@@ -29,7 +29,7 @@ private
 tmp
 
 # Ignore SimpleTest multi-site environment.
-web/sites/simpletest
+sites/simpletest
 
 # Text editor/IDE
 .vscode
