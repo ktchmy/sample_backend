@@ -33,8 +33,8 @@ function tcg_crm_schema() {
         'not null' => TRUE,
         'default' => '',
       ],
-      'File' => [
-        'description' => 'File',
+      'image_url' => [
+        'description' => 'Image File',
         'type' => 'varchar_ascii',
         'length' => 255,
         'not null' => TRUE,

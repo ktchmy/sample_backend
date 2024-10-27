@@ -1,0 +1,15 @@
+tcg_crm.add:
+  path: '/api/sample-submission/add'
+  defaults:
+    _title: 'External Submission'
+    _controller: '\Drupal\tcg_crm\Controller\TcgCrmController::add'
+  methods: ['POST']
+  requirements:
+    _permission: 'access content'
+tcg_crm.list:
+  path: '/sample-submissions'
+  defaults:
+    _controller: '\Drupal\tcg_crm\Controller\TcgCrmController::list'
+    _title: 'List'
+  requirements:
+    _permission: 'access content'
