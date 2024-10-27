@@ -32,4 +32,14 @@ At the admin menu, click on "Extend"
 #### Step 7
 Filter with "Sample Backend" and enable the module.
 
+## URL
+API endpoints <br>
+`/api/sample-submission/add` for add new records
+`/api/sample-submission/list` for get all records
+`/api/sample-submission/get/{id}` for get specific record with id
+`/api/sample-submission/update/{id}` for update specific record
+
+Backend dashboard
+`/sample-submissions` for overview record viewing
+
 

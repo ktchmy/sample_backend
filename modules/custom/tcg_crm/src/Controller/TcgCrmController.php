@@ -36,6 +36,7 @@ class TcgCrmController extends ControllerBase {
     $message = $request->request->get('message');
     $file = $request->files->get('file');
 
+    //TODO: fix image extension issue
     if ($file) {
       $filename = $this->fileSystem->move($file, 'public://');
       $filePath = \Drupal::service('file_system')->realpath($filename);
@@ -107,6 +108,7 @@ class TcgCrmController extends ControllerBase {
     $message = $request->request->get('message');
     $file = $request->files->get('file');
 
+    //TODO: fix image extension issue
     if ($file) {
       $filename = $this->fileSystem->move($file, 'public://');
       $filePath = \Drupal::service('file_system')->realpath($filename);
