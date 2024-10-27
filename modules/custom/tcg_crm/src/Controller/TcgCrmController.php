@@ -101,6 +101,42 @@ class TcgCrmController extends ControllerBase {
     return new JsonResponse($data);
   }
 
+  public function update($sid, Request $request) {
+    $name = $request->request->get('name');
+    $email = $request->request->get('email');
+    $message = $request->request->get('message');
+    $file = $request->files->get('file');
+
+    if ($file) {
+      $filename = $this->fileSystem->move($file, 'public://');
+      $filePath = \Drupal::service('file_system')->realpath($filename);
+    } else {
+      $filePath = '';
+    }
+
+    $query = \Drupal::database()->update('tcg_submission')
+      ->fields([
+        'name' => $name,
+        'email' => $email,
+        'message' => $message,
+        'image_url' => $filePath, // Use the updated image path
+      ])
+      ->condition('id', $sid)
+      ->execute();
+
+    if ($query) {
+      return new JsonResponse([
+        'success' => TRUE,
+        'message' => 'Submission updated successfully',
+      ]);
+    } else {
+      return new JsonResponse([
+        'success' => FALSE,
+        'message' => 'Submission update failed',
+      ]);
+    }
+  }
+
   public function dashboard() {
     $query = \Drupal::database()->select('tcg_submission')
       ->fields('tcg_submission');

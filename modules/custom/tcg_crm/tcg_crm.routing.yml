@@ -20,6 +20,14 @@ tcg_crm.list:
     _controller: '\Drupal\tcg_crm\Controller\TcgCrmController::list'
   requirements:
     _permission: 'access content'
+tcg_crm.update:
+  path: '/api/sample-submission/update/{sid}'
+  defaults:
+    _title: 'External Submission'
+    _controller: '\Drupal\tcg_crm\Controller\TcgCrmController::update'
+  methods: ['POST']
+  requirements:
+    _permission: 'access content'
 tcg_crm.dashboard:
   path: '/sample-submissions'
   defaults:
