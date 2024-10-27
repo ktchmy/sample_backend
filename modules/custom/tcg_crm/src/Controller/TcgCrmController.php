@@ -36,7 +36,6 @@ class TcgCrmController extends ControllerBase {
     $message = $request->request->get('message');
     $file = $request->files->get('file');
 
-    // Process the file upload
     if ($file) {
       $filename = $this->fileSystem->move($file, 'public://');
       $filePath = \Drupal::service('file_system')->realpath($filename);
@@ -44,7 +43,6 @@ class TcgCrmController extends ControllerBase {
       $filePath = '';
     }
 
-    // Save the data to the database
     $query = \Drupal::database()->insert('tcg_submission')
       ->fields(['name', 'email', 'message', 'image_url'])
       ->values([$name, $email, $message, $filePath])
@@ -63,7 +61,47 @@ class TcgCrmController extends ControllerBase {
     }
   }
 
+  public function get($sid) {
+    $query = \Drupal::database()->select('tcg_submission')
+      ->fields('tcg_submission')
+      ->condition('id', $sid);
+    $result = $query->execute()->fetchObject();
+
+    if ($result) {
+      $data = [
+        'id' => $result->id,
+        'name' => $result->name,
+        'email' => $result->email,
+        'message' => $result->message,
+        'image_url' => $result->image_url,
+      ];
+
+      return new JsonResponse($data);
+    } else {
+      return new JsonResponse(['error' => 'Submission not found'], 404);
+    }
+  }
+
   public function list() {
+    $query = \Drupal::database()->select('tcg_submission')
+      ->fields('tcg_submission');
+    $results = $query->execute()->fetchAll();
+
+    $data = [];
+    foreach ($results as $result) {
+      $data[] = [
+        'id' => $result->id,
+        'name' => $result->name,
+        'email' => $result->email,
+        'message' => $result->message,
+        'image_url' => $result->image_url,
+      ];
+    }
+
+    return new JsonResponse($data);
+  }
+
+  public function dashboard() {
     $query = \Drupal::database()->select('tcg_submission')
       ->fields('tcg_submission');
     $result = $query->execute()->fetchAll();
