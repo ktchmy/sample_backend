@@ -31,36 +31,45 @@ class TcgCrmController extends ControllerBase {
   }
 
   public function add(Request $request) {
-    $name = $request->request->get('name');
-    $email = $request->request->get('email');
-    $message = $request->request->get('message');
-    $file = $request->files->get('file');
+    if(count($request->request)!= 0){
+      $name = $request->request->get('name');
+      $email = $request->request->get('email');
+      $message = $request->request->get('message');
+      $file = $request->files->get('file');
 
-    //TODO: fix image extension issue
-    if ($file) {
-      $filename = $this->fileSystem->move($file, 'public://');
-      $filePath = \Drupal::service('file_system')->realpath($filename);
-    } else {
-      $filePath = '';
-    }
 
-    $query = \Drupal::database()->insert('tcg_submission')
-      ->fields(['name', 'email', 'message', 'image_url'])
-      ->values([$name, $email, $message, $filePath])
-      ->execute();
+      //TODO: fix image extension issue
+      if ($file) {
+        $filename = $this->fileSystem->move($file, 'public://');
+        $filePath = \Drupal::service('file_system')->realpath($filename);
+      } else {
+        $filePath = '';
+      }
 
-    if ($query) {
-      return new JsonResponse([
-        'success' => TRUE,
-        'message' => 'Submission successful',
-      ]);
-    } else {
+      $query = \Drupal::database()->insert('tcg_submission')
+        ->fields(['name', 'email', 'message', 'image_url'])
+        ->values([$name, $email, $message, $filePath])
+        ->execute();
+
+      if ($query) {
+        return new JsonResponse([
+          'success' => TRUE,
+          'message' => 'Submission successful',
+        ]);
+      } else {
+        return new JsonResponse([
+          'success' => FALSE,
+          'message' => 'Submission failed',
+        ]);
+      }
+    }else{
       return new JsonResponse([
         'success' => FALSE,
-        'message' => 'Submission failed',
+        'message' => 'Empty Dataset',
       ]);
     }
   }
+
 
   public function get($sid) {
     $query = \Drupal::database()->select('tcg_submission')
@@ -103,38 +112,70 @@ class TcgCrmController extends ControllerBase {
   }
 
   public function update($sid, Request $request) {
-    $name = $request->request->get('name');
-    $email = $request->request->get('email');
-    $message = $request->request->get('message');
-    $file = $request->files->get('file');
+    if(count($request->request)!= 0) {
+      $name = $request->request->get('name');
+      $email = $request->request->get('email');
+      $message = $request->request->get('message');
+      $file = $request->files->get('file');
 
-    //TODO: fix image extension issue
-    if ($file) {
-      $filename = $this->fileSystem->move($file, 'public://');
-      $filePath = \Drupal::service('file_system')->realpath($filename);
-    } else {
-      $filePath = '';
-    }
+      //TODO: fix image extension issue
+      if ($file) {
+        $filename = $this->fileSystem->move($file, 'public://');
+        $filePath = \Drupal::service('file_system')->realpath($filename);
+      } else {
+        $filePath = '';
+      }
 
-    $query = \Drupal::database()->update('tcg_submission')
-      ->fields([
-        'name' => $name,
-        'email' => $email,
-        'message' => $message,
-        'image_url' => $filePath, // Use the updated image path
-      ])
-      ->condition('id', $sid)
-      ->execute();
+      $query = \Drupal::database()->update('tcg_submission')
+        ->fields([
+          'name' => $name,
+          'email' => $email,
+          'message' => $message,
+          'image_url' => $filePath, // Use the updated image path
+        ])
+        ->condition('id', $sid)
+        ->execute();
 
-    if ($query) {
-      return new JsonResponse([
-        'success' => TRUE,
-        'message' => 'Submission updated successfully',
-      ]);
-    } else {
+      if ($query) {
+        return new JsonResponse([
+          'success' => TRUE,
+          'message' => 'Submission updated successfully',
+        ]);
+      } else {
+        return new JsonResponse([
+          'success' => FALSE,
+          'message' => 'Submission update failed',
+        ]);
+      }
+    }else{
       return new JsonResponse([
         'success' => FALSE,
-        'message' => 'Submission update failed',
+        'message' => 'Empty Dataset',
+      ]);
+    }
+  }
+
+  public function delete($sid, Request $request) {
+    if(count($request->request)!= 0) {
+      $query = \Drupal::database()->delete('tcg_submission')
+        ->condition('id', $sid)
+        ->execute();
+
+      if ($query) {
+        return new JsonResponse([
+          'success' => TRUE,
+          'message' => 'Submission deleted successfully',
+        ]);
+      } else {
+        return new JsonResponse([
+          'success' => FALSE,
+          'message' => 'Submission deletion failed',
+        ]);
+      }
+    }else{
+      return new JsonResponse([
+        'success' => FALSE,
+        'message' => 'Empty Dataset',
       ]);
     }
   }
