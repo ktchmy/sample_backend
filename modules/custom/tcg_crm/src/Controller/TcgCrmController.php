@@ -193,7 +193,7 @@ class TcgCrmController extends ControllerBase {
         $this->t('Name'),
         $this->t('Email'),
         $this->t('Message'),
-        $this->t('Image URL'),
+//        $this->t('Image URL'),
       ],
       '#rows' => [],
     ];
@@ -204,7 +204,7 @@ class TcgCrmController extends ControllerBase {
         $row->name,
         $row->email,
         $row->message,
-        $row->image_url,
+//        $row->image_url,
       ];
     }
 
